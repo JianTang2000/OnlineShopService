@@ -69,6 +69,7 @@ public interface IDemoUserDAO {
     @ResultType(DemoUserDto.class)
     DemoUserDto selectUserByEmailAndKey(@Param("email") String email, @Param("key") Long key);
 
+    /////////////////////////////////////////////////////////////////
     /**
      * < Insert，有个BLOB字段 > <br>
      *

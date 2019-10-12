@@ -1,7 +1,13 @@
 package com.tang.billing.demo;
 
+import com.tang.base.util.BaseCommonUtil;
+import com.tang.billing.demoprovider.infrastrucrute.model.DemoUserDetailDto;
+import com.tang.billing.demoprovider.infrastrucrute.model.DemoUserDto;
+import com.tang.param.billing.UserInfoParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+
 import java.util.Random;
 
 public class Calc {
@@ -13,16 +19,16 @@ public class Calc {
 
     public static void main(String[] args) {
 
-        int hit = 0;
-        for (int i = 0; i < 10000000; i++) {
-            int a = randInt(1, 6);
-            int b = randInt(1, 6);
-            int c = randInt(1, 6);
-            if ( (a==3 &&b==3 && c==6)||(a==3 &&b==6 && c==3)||(a==6 &&b==3 && c==3)) {
-                hit++;
-            }
-        }
-        System.out.println("sum " + hit);
+        DemoUserDto userDto = new DemoUserDto();
+        userDto.setUserId(1L);
+        userDto.setEmail("123@163.com");
+        DemoUserDetailDto detailDto = new DemoUserDetailDto();
+        detailDto.setUserId(2L);
+        detailDto.setAddress1Line1("222222");
+        UserInfoParam retParam = new UserInfoParam();
+        BeanUtils.copyProperties(userDto, retParam, UserInfoParam.class);
+        BeanUtils.copyProperties(detailDto, retParam, UserInfoParam.class);
+        System.out.println("sum " + BaseCommonUtil.objectToJsonString(retParam));
 
 
     }

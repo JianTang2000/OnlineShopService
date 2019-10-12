@@ -26,33 +26,22 @@ public class DemoUserController {
     DemoUserService demoUserService;
 
     /**
-     * < 查询用户资料 > <br>
-     *
-     * @auther: tang
-     * @param param < 前台搜索请求的控制层 >
-     * @return < >
+     * @param param 可空，空返回gust用戶，否則根據ID返回具體用戶
+     * @return 用戶信息，包含用戶和用戶detail信息
      */
     @PutMapping("mainView/getUserInfo")
     public Map<String, Object> getUserInfo(UserInfoParam param) {
         logger.info("getUserInfo start, param is {}", BaseCommonUtil.objectToJsonString(param));
         UserInfoParam result = demoUserService.getUserInfo(param);
-        logger.info("result is {}", BaseCommonUtil.objectToJsonString(result));
+        logger.info("getUserInfo finished.");
         if (StringUtils.isEmpty(result.getHandleSignInErrRet())) {
             return Json.success(result);
-        }
-        else {
+        } else {
             return Json.fail(result);
         }
 
     }
 
-    /**
-     * < 找回用户资料 > <br>
-     *
-     * @auther: tang
-     * @param param < 前台搜索请求的控制层 >
-     * @return < >
-     */
     @PutMapping("mainView/handleFindUserInfo")
     public Map<String, Object> handleFindUserInfo(UserInfoParam param) {
         logger.info("handleFindUserInfo start, param is {}", BaseCommonUtil.objectToJsonString(param));
@@ -60,19 +49,11 @@ public class DemoUserController {
         logger.info("result is {}", BaseCommonUtil.objectToJsonString(result));
         if (StringUtils.isEmpty(result.getHandleFindUserInfoErrRet())) {
             return Json.success(result);
-        }
-        else {
+        } else {
             return Json.fail(result);
         }
     }
 
-    /**
-     * < 修改用户资料，目前只支持修改密码，后续会增加一些其他的属性 > <br>
-     *
-     * @auther: tang
-     * @param param < 前台搜索请求的控制层 >
-     * @return < >
-     */
     @PutMapping("mainView/handleEditProfile")
     public Map<String, Object> handleEditProfile(UserInfoParam param) {
         logger.info("handleEditProfile start, param is {}", BaseCommonUtil.objectToJsonString(param));

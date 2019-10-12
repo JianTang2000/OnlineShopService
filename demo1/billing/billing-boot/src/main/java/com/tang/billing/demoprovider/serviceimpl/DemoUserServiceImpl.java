@@ -49,25 +49,23 @@ public class DemoUserServiceImpl implements DemoUserService {
      *
      * @param allUser < 是:扫描所有用户.给不存在detail的user添加Detail,否:只操作指定的userIds的用户 > <不可空>
      * @param userIds < allUser为false时填写 > <可空>
-     * @param url < 额外指定detail文件路径，为空则使用默认值 > <可空>
+     * @param url     < 额外指定detail文件路径，为空则使用默认值 > <可空>
      * @auther: tang
      */
     @Override
     public void createDefaultUserDetail(boolean allUser, List<Long> userIds, String url) {
         if (allUser) {
             // 分页，一次只查询2000条,然后进行赋值操作，再查再做，知道查不出数据为止
-            for (int i = 1;; i++) {
+            for (int i = 1; ; i++) {
                 // 每次createDetailWithId之后，selectUserWithoutDetail结果都会减少，所以始终pageNum =1
                 List<Long> ids = demoUserDAO.selectUserWithoutDetail(2000, 1);
                 if (ValidateUtil.validateNotEmpty(ids)) {
                     this.createDetailWithId(ids, url);
-                }
-                else {
+                } else {
                     break;
                 }
             }
-        }
-        else {
+        } else {
             this.createDetailWithId(userIds, url);
         }
     }
@@ -81,21 +79,21 @@ public class DemoUserServiceImpl implements DemoUserService {
      */
     @Override
     public UserInfoParam getUserInfo(UserInfoParam param) {
-        // 带ID 一般是Gust
+        // 带ID 根據ID查
         if (param.getUserId() != null) {
             logger.info("getUserInfo by id");
             return getUserInfoById(param.getUserId());
         }
-        // 带名字密码，一般是登入
+        // 带名字密码，根據名字密码查
         else if (!StringUtils.isEmpty(param.getUserName())) {
             logger.info("getUserInfo by userName");
             return SignInByName(param);
         }
+        // 带郵件和密碼，根據郵件密码查
         else if (!StringUtils.isEmpty(param.getEmail())) {
             logger.info("getUserInfo by email");
             return SignInByEmail(param);
-        }
-        else {
+        } else {
             // 默认返回gust
             logger.info("get default UserInfo GUST");
             return getUserInfoById(2L);
@@ -109,13 +107,11 @@ public class DemoUserServiceImpl implements DemoUserService {
         if (dto == null) {
             ret.setHandleSignInErrRet(FindUserInfoDef.EMAIL_NOT_FOUND);
             return ret;
-        }
-        else {
+        } else {
             // 校验密码是否正确
             if (dto.getPassWord().equals(param.getPassWord())) {
                 return this.getUserInfoById(dto.getUserId());
-            }
-            else {
+            } else {
                 ret.setHandleSignInErrRet(FindUserInfoDef.PASSWORD_NOT_RIGHT);
                 return ret;
             }
@@ -129,13 +125,11 @@ public class DemoUserServiceImpl implements DemoUserService {
         if (dto == null) {
             ret.setHandleSignInErrRet(FindUserInfoDef.USER_NAME_NOT_FOUND);
             return ret;
-        }
-        else {
+        } else {
             // 校验密码是否正确
             if (dto.getPassWord().equals(param.getPassWord())) {
                 return this.getUserInfoById(dto.getUserId());
-            }
-            else {
+            } else {
                 ret.setHandleSignInErrRet(FindUserInfoDef.PASSWORD_NOT_RIGHT);
                 return ret;
             }
@@ -154,11 +148,9 @@ public class DemoUserServiceImpl implements DemoUserService {
         // 根据userName/email 和lostFoundKey查询用户信息
         if (!StringUtils.isEmpty(param.getUserName())) {
             return getUserInfoByNameAndLostFoundKey(param.getUserName(), param.getLostFoundKey());
-        }
-        else if (!StringUtils.isEmpty(param.getEmail())) {
+        } else if (!StringUtils.isEmpty(param.getEmail())) {
             return getUserInfoByEmailAndLostFoundKey(param.getEmail(), param.getLostFoundKey());
-        }
-        else {
+        } else {
             UserInfoParam retParam = new UserInfoParam();
             retParam.setPassWord("FindUserInfo failed!");
             return retParam;
@@ -172,7 +164,8 @@ public class DemoUserServiceImpl implements DemoUserService {
      * @return < >
      * @auther: tang
      */
-    @Override public UserInfoParam handleEditProfile(UserInfoParam param) {
+    @Override
+    public UserInfoParam handleEditProfile(UserInfoParam param) {
         Long userId = param.getUserId();
         String password = param.getNewPassWord();
         demoUserDAO.updateUserPassword(userId, password);
@@ -186,13 +179,11 @@ public class DemoUserServiceImpl implements DemoUserService {
         if (dto == null) {
             ret.setHandleFindUserInfoErrRet(FindUserInfoDef.USER_NAME_NOT_FOUND);
             return ret;
-        }
-        else {
+        } else {
             // 校验key是否正确
             if (dto.getLostFoundKey().equals(key)) {
                 return this.getUserInfoById(dto.getUserId());
-            }
-            else {
+            } else {
                 ret.setHandleFindUserInfoErrRet(FindUserInfoDef.LOST_FOUND_KEY_NOT_RIGHT);
                 return ret;
             }
@@ -206,13 +197,11 @@ public class DemoUserServiceImpl implements DemoUserService {
         if (dto == null) {
             ret.setHandleFindUserInfoErrRet(FindUserInfoDef.EMAIL_NOT_FOUND);
             return ret;
-        }
-        else {
+        } else {
             // 校验key是否正确
             if (dto.getLostFoundKey().equals(key)) {
                 return this.getUserInfoById(dto.getUserId());
-            }
-            else {
+            } else {
                 ret.setHandleFindUserInfoErrRet(FindUserInfoDef.LOST_FOUND_KEY_NOT_RIGHT);
                 return ret;
             }
@@ -222,16 +211,16 @@ public class DemoUserServiceImpl implements DemoUserService {
     /**
      * < get User Info and detail By Id > <br>
      *
-     * @auther: tang
      * @param userId < >
      * @return < >
+     * @auther: tang
      */
     private UserInfoParam getUserInfoById(Long userId) {
         UserInfoParam retParam = new UserInfoParam();
         DemoUserDto userDto = demoUserDAO.selectUserById(userId);
         DemoUserDetailDto detailDto = demoUserDAO.selectUserDetailById(userId);
         BeanUtils.copyProperties(userDto, retParam, UserInfoParam.class);
-        retParam.setUserDetail(detailDto.getUserDetail());
+        BeanUtils.copyProperties(detailDto, retParam, UserInfoParam.class);
         return retParam;
     }
 
@@ -242,25 +231,23 @@ public class DemoUserServiceImpl implements DemoUserService {
     /**
      * < > <br>
      *
-     * @auther: tang
-     * @param userIds < 可空 >
+     * @param userIds  < 可空 >
      * @param filePath < 可空 >
+     * @auther: tang
      */
     private void createDetailWithId(List<Long> userIds, String filePath) {
         if (ValidateUtil.validateNotEmpty(userIds)) {
             String url;
             if (StringUtils.isEmpty(filePath)) {
                 url = System.getProperty("user.dir") + extraUrl2;
-            }
-            else {
+            } else {
                 url = filePath;
             }
             logger.info("createDefaultUserDetail, url is {}", url);
             byte[] pic = null;
             try {
                 pic = FileHelper.readFileToByte(url);
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 logger.error("createDefaultUserDetail failed, please check url {}", url);
             }
             for (Long userId : userIds) {

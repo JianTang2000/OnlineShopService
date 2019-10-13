@@ -1,6 +1,7 @@
 package com.tang.billing.demoprovider.serviceimpl;
 
 import com.tang.api.billing.DemoUserService;
+import com.tang.base.util.BaseCommonUtil;
 import com.tang.base.util.DateUtil;
 import com.tang.base.util.FileHelper;
 import com.tang.base.util.ValidateUtil;
@@ -152,13 +153,13 @@ public class DemoUserServiceImpl implements DemoUserService {
             return getUserInfoByEmailAndLostFoundKey(param.getEmail(), param.getLostFoundKey());
         } else {
             UserInfoParam retParam = new UserInfoParam();
-            retParam.setPassWord("FindUserInfo failed!");
+            retParam.setHandleFindUserInfoErrRet(FindUserInfoDef.USER_NAME_OR_EMAIL_EMPTY);
             return retParam;
         }
     }
 
     /**
-     * < handle Edit Profile > <br>
+     * < 依次判断，依次更新 > <br>
      *
      * @param param < 不可空 >
      * @return < >
@@ -167,8 +168,18 @@ public class DemoUserServiceImpl implements DemoUserService {
     @Override
     public UserInfoParam handleEditProfile(UserInfoParam param) {
         Long userId = param.getUserId();
-        String password = param.getNewPassWord();
-        demoUserDAO.updateUserPassword(userId, password);
+        if (!StringUtils.isEmpty(param.getNewPassWord())) {
+            demoUserDAO.updateUserPassword(userId, param.getNewPassWord());
+        }
+        if (!StringUtils.isEmpty(param.getEmail())) {
+            demoUserDAO.updateUserEmail(userId, param.getNewEmail());
+        }
+        if (!StringUtils.isEmpty(param.getPhoneNumber())) {
+            demoUserDAO.updateUserPhoneNum(userId, param.getNewPhoneNumber());
+        }
+        if (!StringUtils.isEmpty(param.getUserDetail())) {
+            demoUserDAO.updateUserDetail(userId, param.getNewUserDetail());
+        }
         return null;
     }
 

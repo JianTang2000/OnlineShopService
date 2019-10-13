@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 public interface IDemoResourceDAO {
 
     @Insert("INSERT INTO DEMO_RESOURCE (\n" + //
@@ -29,7 +31,7 @@ public interface IDemoResourceDAO {
 
     @Select("select * from DEMO_RESOURCE")
     @ResultType(DemoResourceDto.class)
-    DemoResourceDto selectAllResource();
+    List<DemoResourceDto> selectAllResource();
 
     @Select("select * from DEMO_RESOURCE where resource_id = #{param1}")
     @ResultType(DemoResourceDetailDto.class)

@@ -81,9 +81,36 @@ public class UserInfoParam implements Serializable {
 
 
     /**
-     * < 新密码 >
+     * < 新資料 >
      */
     private String newPassWord;
+    private Long newPhoneNumber;
+    private String newEmail;
+    private byte[] newUserDetail;
+
+    public Long getNewPhoneNumber() {
+        return newPhoneNumber;
+    }
+
+    public void setNewPhoneNumber(Long newPhoneNumber) {
+        this.newPhoneNumber = newPhoneNumber;
+    }
+
+    public String getNewEmail() {
+        return newEmail;
+    }
+
+    public void setNewEmail(String newEmail) {
+        this.newEmail = newEmail;
+    }
+
+    public byte[] getNewUserDetail() {
+        return newUserDetail;
+    }
+
+    public void setNewUserDetail(byte[] newUserDetail) {
+        this.newUserDetail = newUserDetail;
+    }
 
     public String getNewPassWord() {
         return newPassWord;

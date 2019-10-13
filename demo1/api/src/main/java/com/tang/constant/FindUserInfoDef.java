@@ -20,6 +20,11 @@ public class FindUserInfoDef {
     /**
      * < >
      */
+    public static final String USER_NAME_OR_EMAIL_EMPTY = "user name or email is empty";
+
+    /**
+     * < >
+     */
     public static final String PASSWORD_NOT_RIGHT = "password is not right";
 
     /**

@@ -14,6 +14,9 @@ import com.tang.base.util.BaseCommonUtil;
 import com.tang.base.util.Json;
 import com.tang.param.billing.UserInfoParam;
 
+/**
+ *  tang
+ */
 @RestController
 public class DemoUserController {
 
@@ -42,11 +45,15 @@ public class DemoUserController {
 
     }
 
+    /**
+     * @param param 不可空 根據前臺輸入查找用戶信息
+     * @return 用戶信息
+     */
     @PutMapping("mainView/handleFindUserInfo")
     public Map<String, Object> handleFindUserInfo(UserInfoParam param) {
         logger.info("handleFindUserInfo start, param is {}", BaseCommonUtil.objectToJsonString(param));
         UserInfoParam result = demoUserService.handleFindUserInfo(param);
-        logger.info("result is {}", BaseCommonUtil.objectToJsonString(result));
+        logger.info("handleFindUserInfo finished");
         if (StringUtils.isEmpty(result.getHandleFindUserInfoErrRet())) {
             return Json.success(result);
         } else {
@@ -54,8 +61,12 @@ public class DemoUserController {
         }
     }
 
+    /**
+     * @param param 不可空，根據前臺輸入修改用戶資料,可改的包括密碼，郵箱，電話，頭像
+     * @return success or not
+     */
     @PutMapping("mainView/handleEditProfile")
-    public Map<String, Object> handleEditProfile(UserInfoParam param) {
+    public Map<String, Object> handleEditBaseProfile(UserInfoParam param) {
         logger.info("handleEditProfile start, param is {}", BaseCommonUtil.objectToJsonString(param));
         UserInfoParam result = demoUserService.handleEditProfile(param);
         return Json.success(result);

@@ -34,6 +34,12 @@ public interface IDemoUserDAO {
     @Update("UPDATE DEMO_USER SET PASS_WORD = #{password} WHERE USER_ID =  #{id}")
     void updateUserPassword(@Param("id") Long id, @Param("password") String password);
 
+    @Update("UPDATE DEMO_USER SET EMAIL = #{email} WHERE USER_ID =  #{id}")
+    void updateUserEmail(@Param("id") Long id, @Param("email") String email);
+
+    @Update("UPDATE DEMO_USER SET PHONE_NUMBER = #{phoneNum} WHERE USER_ID =  #{id}")
+    void updateUserPhoneNum(@Param("id") Long id, @Param("phoneNum") Long phoneNum);
+
     @Select("SELECT * FROM DEMO_USER")
     @ResultType(DemoUserDto.class)
     List<DemoUserDto> selectAllUser();
@@ -45,9 +51,9 @@ public interface IDemoUserDAO {
     /**
      * < 指定用户状态全查 > <br>
      *
-     * @auther: tang
      * @param state < "A","X" >
      * @return < DemoPersonDto >
+     * @auther: tang
      */
     @Select("SELECT * FROM DEMO_USER WHERE STATE = #{param1}")
     @ResultType(DemoUserDto.class)
@@ -70,6 +76,7 @@ public interface IDemoUserDAO {
     DemoUserDto selectUserByEmailAndKey(@Param("email") String email, @Param("key") Long key);
 
     /////////////////////////////////////////////////////////////////
+
     /**
      * < Insert，有个BLOB字段 > <br>
      *
@@ -103,6 +110,9 @@ public interface IDemoUserDAO {
             "       #{dto.address3PostCode})")
     void createUserDetail(@Param("dto") DemoUserDetailDto dto);
 
+    @Update("UPDATE DEMO_USER_DETAIL SET USER_DETAIL = #{detail} WHERE USER_ID =  #{id}")
+    void updateUserDetail(@Param("id") Long id, @Param("detail") byte[] detail);
+
     @Select("SELECT * FROM DEMO_USER_DETAIL WHERE USER_ID = #{param1}")
     @ResultType(DemoUserDetailDto.class)
     DemoUserDetailDto selectUserDetailById(Long userId);
@@ -111,9 +121,9 @@ public interface IDemoUserDAO {
      * < 分页查询，查找所有没有头像的用户 > <br>
      *
      * @param pageSize < feikong >
-     * @param pageNum < feikong >
-     * @auther: tang
+     * @param pageNum  < feikong >
      * @return < DemoPersonDto >
+     * @auther: tang
      */
     @SelectProvider(type = DemoUserDaoSqlProvider.class, method = "selectUserWithoutDetail")
     @ResultType(Long.class)

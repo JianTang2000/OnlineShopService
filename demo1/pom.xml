@@ -177,7 +177,6 @@
         <module>api</module>
         <module>base</module>
         <module>billing</module>
-        <module>profile</module>
     </modules>
 
     <build>

@@ -1,23 +1,23 @@
 package com.tang.billing.demoprovider.controller;
 
+import java.util.List;
 import java.util.Map;
 
+import com.tang.param.billing.ResourceSearchInputParam;
+import com.tang.param.billing.ResourceSearchResultParam;
+import com.tang.param.billing.ResourceSearchResultSimpleParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tang.api.billing.DemoResourceService;
 import com.tang.base.util.BaseCommonUtil;
 import com.tang.base.util.Json;
-import com.tang.param.billing.HandleOperateParam;
-import com.tang.param.billing.ResourceDetailParam;
 
 /**
- *
  * @author tang.jian<br>
  */
 @RestController
@@ -32,34 +32,30 @@ public class ResourceController {
     DemoResourceService demoResourceService;
 
     /**
-     * < 每一个资源点开都是一个单独页，调用这个接口根据Id查询ResourceDetail > <br>
-     *
-     * @auther: tang
+     * @param param Search by the Input ,must be quick quick quick!
+     * @return Search result
+     */
+    @GetMapping("mainView/getDataByInput")
+    public Map<String, Object> getDataByInput(ResourceSearchInputParam param) {
+        logger.info("getDataByInput start, param is {}", BaseCommonUtil.objectToJsonString(param));
+        List<ResourceSearchResultSimpleParam> result = demoResourceService.getData(param);
+        logger.info("getDataByInput finished");
+        return Json.success(result);
+    }
+
+    /**
+     * @param id the id of the detail resource
+     * @return the  resource detail
      */
     @GetMapping("mainView/getResourceDetail/{id}")
     public Map<String, Object> getResourceDetail(@PathVariable Long id) {
-        ResourceDetailParam param = null;
+        logger.info("getResourceDetail start, id is {}", BaseCommonUtil.objectToJsonString(id));
+        ResourceSearchResultParam param = demoResourceService.getResourceDetail(id);
+        logger.info("getResourceDetail finished");
         if (param != null) {
             return Json.success(param);
-        }
-        else {
+        } else {
             return Json.fail();
         }
     }
-
-
-
-    /**
-     * < 下载操作请求 > <br>
-     *
-     * @auther: tang
-     * @param param < 操作数据 >
-     * @return < >
-     */
-    @PutMapping("mainView/handleDownload")
-    public Map<String, Object> handleDownload(HandleOperateParam param) {
-        logger.info("handleDownload start, param is {}", BaseCommonUtil.objectToJsonString(param));
-        return Json.success(null);
-    }
-
 }

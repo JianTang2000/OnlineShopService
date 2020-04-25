@@ -2,6 +2,7 @@ package com.tang.billing.demoprovider.controller;
 
 import java.util.Map;
 
+import com.tang.param.billing.operateUserParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,4 +72,13 @@ public class DemoUserController {
         UserInfoParam result = demoUserService.handleEditProfile(param);
         return Json.success(result);
     }
+
+    //注册
+    @PutMapping("mainView/signUp")
+    public Map<String, Object> signUp(operateUserParam param) {
+        logger.info("signUp start, param is {}", BaseCommonUtil.objectToJsonString(param));
+        operateUserParam result = demoUserService.signUp(param);
+        return Json.success(result);
+    }
+
 }

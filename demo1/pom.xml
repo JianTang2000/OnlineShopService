@@ -168,6 +168,12 @@
             <version>2.8.11</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.chenlb.mmseg4j/mmseg4j-core -->
+        <dependency>
+            <groupId>com.chenlb.mmseg4j</groupId>
+            <artifactId>mmseg4j-core</artifactId>
+            <version>1.10.0</version>
+        </dependency>
 
 
 

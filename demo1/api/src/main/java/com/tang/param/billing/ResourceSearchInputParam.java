@@ -12,10 +12,10 @@ public class ResourceSearchInputParam implements Serializable {
     /**
      * serialVersionUID <br>
      */
-    private static final long serialVersionUID = -1780401730241163550L;
+    private static final long serialVersionUID = -2358091730841162550L;
 
     /**
-     * < 用户名，不可空 >
+     * < 用户名，非空则 指定搜索 该用户发布的资源，可空>
      */
     private Long userId;
 
@@ -25,15 +25,20 @@ public class ResourceSearchInputParam implements Serializable {
     private String input;
 
     /**
-     * < 搜索范围，分商品，用戶兩種，不可空 >
+     * < 搜索范围，分商品1 ，用戶3 兩種，可空，空默认全部 >
      */
     private String searchType;
 
 
     /**
-     * < 粗略匹配，隨緣搜索，不可空 >
+     * < 随便匹配是否选中，可空，前台传空会默认为false >
      */
-    private boolean RoughMatch;
+    private boolean roughMatch;
+
+    /**
+     * 物品类别，从1--12，可空，空则不指定类别
+     */
+    private Long item;
 
     public Long getUserId() {
         return userId;
@@ -59,11 +64,19 @@ public class ResourceSearchInputParam implements Serializable {
         this.searchType = searchType;
     }
 
-    public boolean isRoughMatch() {
-        return RoughMatch;
+    public boolean getRoughMatch() {
+        return roughMatch;
     }
 
     public void setRoughMatch(boolean roughMatch) {
-        RoughMatch = roughMatch;
+        this.roughMatch = roughMatch;
+    }
+
+    public Long getItem() {
+        return item;
+    }
+
+    public void setItem(Long item) {
+        this.item = item;
     }
 }

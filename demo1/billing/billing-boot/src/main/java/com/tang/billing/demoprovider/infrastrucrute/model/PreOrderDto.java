@@ -1,18 +1,19 @@
 package com.tang.billing.demoprovider.infrastrucrute.model;
 
-public class UserOrderDto {
+/**
+ * @author tang
+ */
+public class PreOrderDto {
 
     private Long userId;
+
     private Long resourceId;
+
     private Long itemNum;
 
     private String deliverType;
     private String deliverTime;
     private String addressType;
-
-    private Long extraCost;
-    private Long discount;
-    private String orderComment;
 
     public Long getUserId() {
         return userId;
@@ -60,29 +61,5 @@ public class UserOrderDto {
 
     public void setAddressType(String addressType) {
         this.addressType = addressType;
-    }
-
-    public Long getExtraCost() {
-        return extraCost;
-    }
-
-    public void setExtraCost(Long extraCost) {
-        this.extraCost = extraCost;
-    }
-
-    public Long getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Long discount) {
-        this.discount = discount;
-    }
-
-    public String getOrderComment() {
-        return orderComment;
-    }
-
-    public void setOrderComment(String orderComment) {
-        this.orderComment = orderComment;
     }
 }

@@ -29,12 +29,22 @@ public class ResourceSearchResultParam implements Serializable {
      * < 后续会写个算法来计算和改变这个hot >
      */
     private Long hot;
-    private byte[] photo1;
-    private byte[] photo2;
-    private byte[] photo3;
-    private byte[] photo4;
-    private byte[] photo5;
+    private byte[] photoOne;
+    private byte[] photoTwo;
+    private byte[] photoThree;
+    private byte[] photoFour;
+    private byte[] photoFive;
     private byte[] photoDetail;
+
+    private Long fileIndex;
+
+    public Long getFileIndex() {
+        return fileIndex;
+    }
+
+    public void setFileIndex(Long fileIndex) {
+        this.fileIndex = fileIndex;
+    }
 
     public Long getResourceId() {
         return resourceId;
@@ -132,44 +142,44 @@ public class ResourceSearchResultParam implements Serializable {
         this.hot = hot;
     }
 
-    public byte[] getPhoto1() {
-        return photo1;
+    public byte[] getPhotoOne() {
+        return photoOne;
     }
 
-    public void setPhoto1(byte[] photo1) {
-        this.photo1 = photo1;
+    public void setPhotoOne(byte[] photoOne) {
+        this.photoOne = photoOne;
     }
 
-    public byte[] getPhoto2() {
-        return photo2;
+    public byte[] getPhotoTwo() {
+        return photoTwo;
     }
 
-    public void setPhoto2(byte[] photo2) {
-        this.photo2 = photo2;
+    public void setPhotoTwo(byte[] photoTwo) {
+        this.photoTwo = photoTwo;
     }
 
-    public byte[] getPhoto3() {
-        return photo3;
+    public byte[] getPhotoThree() {
+        return photoThree;
     }
 
-    public void setPhoto3(byte[] photo3) {
-        this.photo3 = photo3;
+    public void setPhotoThree(byte[] photoThree) {
+        this.photoThree = photoThree;
     }
 
-    public byte[] getPhoto4() {
-        return photo4;
+    public byte[] getPhotoFour() {
+        return photoFour;
     }
 
-    public void setPhoto4(byte[] photo4) {
-        this.photo4 = photo4;
+    public void setPhotoFour(byte[] photoFour) {
+        this.photoFour = photoFour;
     }
 
-    public byte[] getPhoto5() {
-        return photo5;
+    public byte[] getPhotoFive() {
+        return photoFive;
     }
 
-    public void setPhoto5(byte[] photo5) {
-        this.photo5 = photo5;
+    public void setPhotoFive(byte[] photoFive) {
+        this.photoFive = photoFive;
     }
 
     public byte[] getPhotoDetail() {

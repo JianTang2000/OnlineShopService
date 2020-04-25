@@ -40,9 +40,13 @@ public interface IDemoUserDAO {
     @Update("UPDATE DEMO_USER SET PHONE_NUMBER = #{phoneNum} WHERE USER_ID =  #{id}")
     void updateUserPhoneNum(@Param("id") Long id, @Param("phoneNum") Long phoneNum);
 
-    @Select("SELECT * FROM DEMO_USER")
+    @Select("SELECT * FROM DEMO_USER ")
     @ResultType(DemoUserDto.class)
     List<DemoUserDto> selectAllUser();
+
+    @Select("SELECT user_name FROM DEMO_USER")
+    @ResultType(String.class)
+    List<String> selectAllUserNames();
 
     @Select("SELECT * FROM DEMO_USER WHERE USER_ID = #{param1}")
     @ResultType(DemoUserDto.class)
@@ -67,6 +71,10 @@ public interface IDemoUserDAO {
     @ResultType(DemoUserDto.class)
     DemoUserDto selectUserByeEmail(String email);
 
+    @Select("SELECT * FROM DEMO_USER WHERE PHONE_NUMBER = #{phoneNumber}")
+    @ResultType(DemoUserDto.class)
+    DemoUserDto selectUserByPhone(@Param("phoneNumber") Long phoneNumber);
+
     @Select("select * from DEMO_USER where user_name = #{name} and lost_found_key = #{key} ")
     @ResultType(DemoUserDto.class)
     DemoUserDto selectUserByNameAndKey(@Param("name") String name, @Param("key") Long key);
@@ -84,15 +92,15 @@ public interface IDemoUserDAO {
      */
     @Insert("INSERT INTO DEMO_USER_DETAIL (\n" + //
             "   USER_ID,\n" + //
-            "   USER_DETAIL\n" + //
-            "   ADDRESS_1_LINE_1\n" + //
-            "   ADDRESS_1_LINE_2\n" + //
-            "   ADDRESS_1_POST_CODE\n" + //
-            "   ADDRESS_2_LINE_1\n" + //
-            "   ADDRESS_2_LINE_2\n" + //
-            "   ADDRESS_2_POST_CODE\n" + //
-            "   ADDRESS_3_LINE_1\n" + //
-            "   ADDRESS_3_LINE_2\n" + //
+            "   USER_DETAIL,\n" + //
+            "   ADDRESS_1_LINE_1,\n" + //
+            "   ADDRESS_1_LINE_2,\n" + //
+            "   ADDRESS_1_POST_CODE,\n" + //
+            "   ADDRESS_2_LINE_1,\n" + //
+            "   ADDRESS_2_LINE_2,\n" + //
+            "   ADDRESS_2_POST_CODE,\n" + //
+            "   ADDRESS_3_LINE_1,\n" + //
+            "   ADDRESS_3_LINE_2,\n" + //
             "   ADDRESS_3_POST_CODE\n" + //
             ")\n" + //
             "VALUES\n" + //
@@ -107,7 +115,8 @@ public interface IDemoUserDAO {
             "       #{dto.address2PostCode},\n" + //
             "       #{dto.address3Line1},\n" + //
             "       #{dto.address3Line2},\n" + //
-            "       #{dto.address3PostCode})")
+            "       #{dto.address3PostCode}" +
+            ")")
     void createUserDetail(@Param("dto") DemoUserDetailDto dto);
 
     @Update("UPDATE DEMO_USER_DETAIL SET USER_DETAIL = #{detail} WHERE USER_ID =  #{id}")

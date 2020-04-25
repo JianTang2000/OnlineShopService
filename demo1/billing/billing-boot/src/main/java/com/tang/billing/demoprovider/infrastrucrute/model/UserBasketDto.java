@@ -2,21 +2,12 @@ package com.tang.billing.demoprovider.infrastrucrute.model;
 
 public class UserBasketDto {
 
-    private Long basketId;
 
     private Long userId;
 
     private Long resourceId;
 
     private Long itemNum;
-
-    public Long getBasketId() {
-        return basketId;
-    }
-
-    public void setBasketId(Long basketId) {
-        this.basketId = basketId;
-    }
 
     public Long getUserId() {
         return userId;

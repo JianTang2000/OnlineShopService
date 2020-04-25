@@ -1,15 +1,14 @@
 package com.tang.billing.demoprovider.serviceimpl;
 
 import com.tang.api.billing.DemoUserService;
-import com.tang.base.util.BaseCommonUtil;
-import com.tang.base.util.DateUtil;
-import com.tang.base.util.FileHelper;
-import com.tang.base.util.ValidateUtil;
+import com.tang.base.util.*;
+import com.tang.base.util.sequenceutil.SequenceUtil;
 import com.tang.billing.demoprovider.infrastrucrute.DAO.billing.IDemoUserDAO;
 import com.tang.billing.demoprovider.infrastrucrute.model.DemoUserDetailDto;
 import com.tang.billing.demoprovider.infrastrucrute.model.DemoUserDto;
 import com.tang.constant.FindUserInfoDef;
 import com.tang.param.billing.UserInfoParam;
+import com.tang.param.billing.operateUserParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Service("DemoUserService")
@@ -30,6 +30,113 @@ public class DemoUserServiceImpl implements DemoUserService {
 
     @Autowired
     IDemoUserDAO demoUserDAO;
+
+
+    private static String userIdSEQ = "SEQ_USER_ID";
+    private static String lostKeySEQ = "SEQ_LOST_KEY";
+
+    static String photo_path = System.getenv("photo_path");
+    static String dir = System.getProperty("user.dir");
+
+//    inputStream = new FileInputStream(pmml_path + "/extraData/irisRpart.pmml");
+//        inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("\\extraData\\irisRpart.pmml");
+
+    private String getPathHead() {
+        if (!StringUtils.isEmpty(photo_path)) {
+            logger.info("getPathHead find url is {}", photo_path);
+            return photo_path;
+        } else {
+            logger.info("getPathHead find url is {}", dir);
+            return dir;
+        }
+    }
+
+
+    @Override
+    public operateUserParam signUp(operateUserParam param) {
+        String ip = param.getIp();
+        CacheMap<Object, Object> ipCache = CacheMap.getDefault();
+        //先看IP是否最近用过，没用过允许操作
+        if(ipCache.get(ip) == null) {
+            ipCache.put(ip, ip);
+            operateUserParam ret = new operateUserParam();
+            DemoUserDto dto1 = demoUserDAO.selectUserByName(param.getUserName());
+            DemoUserDto dto2 = demoUserDAO.selectUserByeEmail(param.getEmail());
+            DemoUserDto dto3 = demoUserDAO.selectUserByPhone(param.getPhoneNumber());
+            if (dto1 == null && dto2 == null && dto3 == null) {
+                Long userId = SequenceUtil.next(userIdSEQ);
+                Long key = SequenceUtil.next(lostKeySEQ);
+                Date now = DateUtil.getNowTimeDate();
+                DemoUserDto dto = new DemoUserDto();
+                dto.setUserId(userId);
+                dto.setUserName(param.getUserName());
+                dto.setEmail(param.getEmail());
+                dto.setCreateDate(now);
+                dto.setStateDate(now);
+                dto.setState("A");
+                dto.setLostFoundKey(key);
+                dto.setPassWord(param.getPassWord());
+                dto.setPhoneNumber(param.getPhoneNumber());
+
+                //插入默认的图片作为头像，还有地址信息
+                byte[] pic;
+                try {
+                    pic = FileHelper.readFileToByte(getPathHead() + "/extraData/G.jpg");
+                } catch (IOException e) {
+                    // C:/home/workspace/Demo2ShopService/trunk/demo1/billing/billing-boot/src/main/resources
+                    logger.error("createDefaultUserDetail failed, please check url {}", getPathHead() + "/extraData/G.jpg");
+                    ret.setSuccessOrNot("N");
+                    ret.setRetInfo("注册系统似乎出了点问题~");
+                    return ret;
+                }
+                DemoUserDetailDto detailDto = new DemoUserDetailDto();
+                detailDto.setUserId(userId);
+                detailDto.setUserDetail(pic);
+                detailDto.setAddress1Line1(param.getAddress1Line1());
+                detailDto.setAddress1Line2(param.getAddress1Line2());
+                detailDto.setAddress1PostCode(param.getAddress1PostCode());
+
+                detailDto.setAddress2Line1(defaultAd(param.getAddress2Line1()));
+                detailDto.setAddress2Line2(defaultAd(param.getAddress2Line2()));
+                detailDto.setAddress2PostCode(defaultAd(param.getAddress2PostCode()));
+                detailDto.setAddress3Line1(defaultAd(param.getAddress3Line1()));
+                detailDto.setAddress3Line2(defaultAd(param.getAddress3Line2()));
+                detailDto.setAddress3PostCode(defaultAd(param.getAddress3PostCode()));
+
+                demoUserDAO.insertUser(dto);
+                demoUserDAO.createUserDetail(detailDto);
+
+
+                ret.setSuccessOrNot("Y");
+                ret.setRetInfo("success Sign Up! your lost found key is: " + key);
+                return ret;
+
+            } else {
+                ret.setSuccessOrNot("N");
+                ret.setRetInfo("email/name/phone number has been used! 邮箱/用户名/电话已注册！");
+                return ret;
+            }
+        }
+        else {
+            operateUserParam ret = new operateUserParam();
+            ret.setSuccessOrNot("N");
+            ret.setRetInfo("你的IP最近已经注册过了！请等一段时间再来吧！");
+            return ret;
+        }
+
+
+
+    }
+
+    // 检查address,为空则置换成一个默认值
+    private String defaultAd(String address) {
+        if(StringUtils.isEmpty(address)) {
+            return "default address!";
+        }
+        else {
+            return address;
+        }
+    }
 
     @Override
     public void createNewUser(String userName, String email, int i) {
@@ -235,9 +342,27 @@ public class DemoUserServiceImpl implements DemoUserService {
         return retParam;
     }
 
-    private String extraUrl = "\\src\\main\\resources\\extraData\\default.png";
+    private String extraUrl = "\\billing\\billing-boot\\src\\main\\resources\\extraData\\default.png";
 
-    private String extraUrl2 = "\\src\\main\\resources\\extraData\\admin.png";
+    private String extraUrl2 = "\\billing\\billing-boot\\src\\main\\resources\\extraData\\G.jpg";
+
+//    List<Long> ids = new ArrayList<>();
+//        ids.add(1L);
+//        List<Long> ids2 = new ArrayList<>();
+//        ids2.add(2L);
+//        List<Long> ids3 = new ArrayList<>();
+//        ids3.add(1001L);
+//        List<Long> ids4 = new ArrayList<>();
+//        ids4.add(1002L);
+//        String s1 = "C:\\home\\workspace\\Demo2ShopService\\trunk\\demo1\\billing\\billing-boot\\src\\main\\resources\\extraData\\T.jpg";
+//        String s2 = "C:\\home\\workspace\\Demo2ShopService\\trunk\\demo1\\billing\\billing-boot\\src\\main\\resources\\extraData\\J.jpg";
+//        String s3 = "C:\\home\\workspace\\Demo2ShopService\\trunk\\demo1\\billing\\billing-boot\\src\\main\\resources\\extraData\\G.jpg";
+//        String s4 = "C:\\home\\workspace\\Demo2ShopService\\trunk\\demo1\\billing\\billing-boot\\src\\main\\resources\\extraData\\I.jpg";
+//        demoUserService.createDefaultUserDetail(false, ids, s1);
+//        demoUserService.createDefaultUserDetail(false, ids2, s2);
+//        demoUserService.createDefaultUserDetail(false, ids3, s3);
+//        demoUserService.createDefaultUserDetail(false, ids4, s4);
+//        return Json.success("12");
 
     /**
      * < > <br>
@@ -250,7 +375,7 @@ public class DemoUserServiceImpl implements DemoUserService {
         if (ValidateUtil.validateNotEmpty(userIds)) {
             String url;
             if (StringUtils.isEmpty(filePath)) {
-                url = System.getProperty("user.dir") + extraUrl2;
+                url = System.getProperty("user.dir") + extraUrl;
             } else {
                 url = filePath;
             }
@@ -265,6 +390,7 @@ public class DemoUserServiceImpl implements DemoUserService {
                 DemoUserDetailDto dto = new DemoUserDetailDto();
                 dto.setUserId(userId);
                 dto.setUserDetail(pic);
+                logger.info("dto is {}", BaseCommonUtil.objectToJsonString(dto));
                 demoUserDAO.createUserDetail(dto);
             }
         }

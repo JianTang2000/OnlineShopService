@@ -3,6 +3,7 @@ package com.tang.api.billing;
 import java.util.List;
 
 import com.tang.param.billing.UserInfoParam;
+import com.tang.param.billing.operateUserParam;
 
 /**
  * < ><br>
@@ -57,5 +58,8 @@ public interface DemoUserService {
      * @return < >
      */
     UserInfoParam handleEditProfile(UserInfoParam param);
+
+    operateUserParam signUp(operateUserParam param);
+
 
 }

@@ -1,8 +1,6 @@
 package com.tang.api.billing;
 
-import com.tang.param.billing.ResourceSearchInputParam;
-import com.tang.param.billing.ResourceSearchResultParam;
-import com.tang.param.billing.ResourceSearchResultSimpleParam;
+import com.tang.param.billing.*;
 
 import java.util.List;
 
@@ -31,5 +29,84 @@ public interface DemoResourceService {
      * @return < price,name user name,main photo and all the rest >
      */
     ResourceSearchResultParam getResourceDetail(Long id);
+
+    /**
+     * @param param param 默认数量为1
+     */
+    void addToCart(OperateCartParam param);
+
+    void editResourceDetail(ResourceSearchResultParam param);
+
+    String createNewResource(ResourceSearchResultParam param);
+
+
+
+    /**
+     * @param param  根据用户ID查询，返回包括商品资源得name 展示图，单价，数量 等消息
+     */
+    List<ResourceSearchResultSimpleParam> queryCart(OperateCartParam param);
+
+    List<ResourceSearchResultSimpleParam> cartDeleteOne(OperateCartParam param);
+
+    List<ResourceSearchResultSimpleParam> cartAddOne(OperateCartParam param);
+
+    List<ResourceSearchResultSimpleParam> cleanCart(OperateCartParam param);
+
+    List<ResourceSearchResultSimpleParam> sureToCheckOut(OperateCartParam param);
+
+    List<OperateOrderParam> queryPreOrder(OperateCartParam param);
+
+    List<OperateOrderParam> queryOrder(OperateCartParam param);
+
+    List<OperateOrderParam> queryAllHisOrder(OperateCartParam param);
+
+    List<OperateOrderParam> queryHisOrder(OperateCartParam param);
+
+    List<OperateOrderParam> adminSearchOrder(OperateCartParam param);
+
+    List<ResourceSearchResultSimpleParam> seeThisOrder(OperateCartParam param);
+
+
+    List<OperateOrderParam> searchOrder(OperateCartParam param);
+
+    List<OperateOrderParam> queryCheckOrder(OperateCartParam param);
+
+    List<ResourceSearchResultSimpleParam> handleCheck(OperateCartParam param);
+
+    List<ResourceSearchResultSimpleParam> handlePayView(OperateCartParam param);
+
+
+    List<ResourceSearchResultSimpleParam> checkDeleteOne(OperateCartParam param);
+
+    void sureThisOrder(OperateCartParam param);
+
+    void orderPaid(OperateCartParam param);
+
+    void orderCancel(OperateCartParam param);
+
+    void orderClose(OperateCartParam param);
+
+    void cancelThisOrder(OperateCartParam param);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * 添加图片
+     */
+    void insertResourcePhoto();
 
 }

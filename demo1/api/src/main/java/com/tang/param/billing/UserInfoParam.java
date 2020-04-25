@@ -11,9 +11,6 @@ import java.util.Date;
  */
 public class UserInfoParam implements Serializable {
 
-    /**
-     * serialVersionUID <br>
-     */
     private static final long serialVersionUID = -2358091730841163550L;
 
     /**
@@ -21,9 +18,6 @@ public class UserInfoParam implements Serializable {
      */
     private Long userId;
 
-    /**
-     * < >
-     */
     private String userName;
 
     /**
@@ -31,24 +25,12 @@ public class UserInfoParam implements Serializable {
      */
     private String state;
 
-    /**
-     * < >
-     */
     private Date stateDate;
 
-    /**
-     * < >
-     */
     private Date createDate;
 
-    /**
-     * < >
-     */
     private String email;
 
-    /**
-     * < 四位随机数，一般情况下不许允修改，在找回账户时做检验使用，类似于steam的找回密钥 >
-     */
     private Long lostFoundKey;
 
     /**

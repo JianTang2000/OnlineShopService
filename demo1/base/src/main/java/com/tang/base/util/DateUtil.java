@@ -58,6 +58,15 @@ public final class DateUtil {
     /**
      * < yyyy-MM-dd >
      */
+    public static Date getNowTimeSQLDate() {
+        Date date = new Date();
+        String date2String = date2String(date, DATETIME_FORMAT_1);
+        return string2Date(date2String, DATETIME_FORMAT_1);
+    }
+
+    /**
+     * < yyyy-MM-dd >
+     */
     public static Date getNowTimeDate() {
         Date date = new Date();
         String date2String = date2String(date, DEFAULT_DATE_FORMAT);

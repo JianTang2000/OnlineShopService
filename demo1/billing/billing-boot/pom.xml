@@ -16,6 +16,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
+
+
         <dependency>
             <groupId>com.tang</groupId>
             <artifactId>api</artifactId>
@@ -29,12 +31,37 @@
             <!--<scope>test</scope>-->
         </dependency>
 
-        <!--引入了Spring Boot默认的HTTP引擎Tomcat。-->
+        <!--        引入了Spring Boot默认的HTTP引擎Tomcat。-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <!--<scope>provided</scope>-->
         </dependency>
+
+
+
+
+
+
+<!--        <dependency>-->
+<!--            <groupId>com.tang</groupId>-->
+<!--            <artifactId>api</artifactId>-->
+<!--            <version>0.0.1-SNAPSHOT</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.tang</groupId>-->
+<!--            <artifactId>demo-base</artifactId>-->
+<!--            <version>0.0.1-SNAPSHOT</version>-->
+<!--            &lt;!&ndash;<scope>test</scope>&ndash;&gt;-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash;引入了Spring Boot默认的HTTP引擎Tomcat。&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-tomcat</artifactId>-->
+<!--            &lt;!&ndash;<scope>provided</scope>&ndash;&gt;-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>

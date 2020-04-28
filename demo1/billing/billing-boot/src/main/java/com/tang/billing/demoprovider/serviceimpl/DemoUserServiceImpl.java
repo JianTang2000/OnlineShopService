@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Service("DemoUserService")
@@ -344,6 +345,18 @@ public class DemoUserServiceImpl implements DemoUserService {
         BeanUtils.copyProperties(detailDto, retParam, UserInfoParam.class);
         return retParam;
     }
+
+//    private static HashMap<Long, UserInfoParam> sysUser;
+//
+//    private void sysUserInit() {
+//        if(sysUser.size() != 0) {
+//            return;
+//        }
+//
+//    }
+
+
+
 
     private String extraUrl = "\\billing\\billing-boot\\src\\main\\resources\\extraData\\default.png";
 

@@ -36,6 +36,7 @@ public class DemoUserServiceImpl implements DemoUserService {
     private static String lostKeySEQ = "SEQ_LOST_KEY";
 
     static String photo_path = System.getenv("photo_path");
+    static String pmml_path = System.getenv("pmml_path");
     static String dir = System.getProperty("user.dir");
 
 //    inputStream = new FileInputStream(pmml_path + "/extraData/irisRpart.pmml");
@@ -46,7 +47,9 @@ public class DemoUserServiceImpl implements DemoUserService {
             logger.info("getPathHead find url is {}", photo_path);
             return photo_path;
         } else {
-            logger.info("getPathHead find url is {}", dir);
+            if(!StringUtils.isEmpty(pmml_path)) {
+                return pmml_path;
+            }
             return dir;
         }
     }

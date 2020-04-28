@@ -308,6 +308,7 @@ public class DemoResourceServiceImpl implements DemoResourceService {
     }
 
     static String photo_path = System.getenv("photo_path");
+    static String pmml_path = System.getenv("pmml_path");
     static String dir = System.getProperty("user.dir");
     private static String SEQ_RE = "SEQ_RESOURCE_ID";
 
@@ -315,6 +316,9 @@ public class DemoResourceServiceImpl implements DemoResourceService {
         if (!StringUtils.isEmpty(photo_path)) {
             return photo_path;
         } else {
+            if(!StringUtils.isEmpty(pmml_path)) {
+                return pmml_path;
+            }
             return dir;
         }
     }

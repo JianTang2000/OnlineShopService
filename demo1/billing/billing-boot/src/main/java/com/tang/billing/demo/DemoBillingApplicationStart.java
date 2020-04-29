@@ -32,7 +32,7 @@ public class DemoBillingApplicationStart {
         // start embedded zookeeper server
         // 这里的EmbeddedZooKeeper的port，我暂时的理解是这个服务的端口，
         // ZK用的是2182，所以这里如果也用2182会占用
-        new EmbeddedZooKeeper(2183, false).start();
+        new EmbeddedZooKeeper(2383, false).start();
         SpringApplication.run(DemoBillingApplicationStart.class, args);
     }
 

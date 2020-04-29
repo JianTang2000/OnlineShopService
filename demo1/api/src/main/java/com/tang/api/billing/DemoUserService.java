@@ -61,5 +61,7 @@ public interface DemoUserService {
 
     operateUserParam signUp(operateUserParam param);
 
+    void testAlive();
+
 
 }

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +29,15 @@ public class DemoUserController {
 
     @Autowired
     DemoUserService demoUserService;
+
+
+    //给postman的测试接口
+    @GetMapping("mainView/testAlive")
+    public Map<String, Object> testAlive() {
+        logger.info("testAlive start");
+        demoUserService.testAlive();
+        return Json.success("it is alive!");
+    }
 
     /**
      * @param param 可空，空返回gust用戶，否則根據ID返回具體用戶

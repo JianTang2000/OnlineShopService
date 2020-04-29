@@ -55,6 +55,63 @@ public class DemoUserServiceImpl implements DemoUserService {
         }
     }
 
+    private boolean tested = false;
+
+    @Override
+    public void testAlive() {
+        if(!tested) {
+            DemoUserDetailDto detailDto1 = demoUserDAO.selectUserDetailById(1L); //admin
+            DemoUserDetailDto detailDto2 = demoUserDAO.selectUserDetailById(2L); //gust
+            if(null == detailDto1) {
+                byte[] pic;
+                try {
+                    pic = FileHelper.readFileToByte(getPathHead() + "/extraData/T.jpg");
+                } catch (IOException e) {
+                    // C:/home/workspace/Demo2ShopService/trunk/demo1/billing/billing-boot/src/main/resources
+                    logger.error("createDefaultUserDetail failed, please check url {}", getPathHead() + "/extraData/G.jpg");
+                    return;
+                }
+                DemoUserDetailDto detailDto = new DemoUserDetailDto();
+                detailDto.setUserId(1L);
+                detailDto.setUserDetail(pic);
+                detailDto.setAddress1Line1("default address!");
+                detailDto.setAddress1Line2("default address!");
+                detailDto.setAddress1PostCode("default address!");
+                detailDto.setAddress2Line1("default address!");
+                detailDto.setAddress2Line2("default address!");
+                detailDto.setAddress2PostCode("default address!");
+                detailDto.setAddress3Line1("default address!");
+                detailDto.setAddress3Line2("default address!");
+                detailDto.setAddress3PostCode("default address!");
+                demoUserDAO.createUserDetail(detailDto);
+            }
+            if(null == detailDto2) {
+                byte[] pic;
+                try {
+                    pic = FileHelper.readFileToByte(getPathHead() + "/extraData/J.jpg");
+                } catch (IOException e) {
+                    // C:/home/workspace/Demo2ShopService/trunk/demo1/billing/billing-boot/src/main/resources
+                    logger.error("createDefaultUserDetail failed, please check url {}", getPathHead() + "/extraData/J.jpg");
+                    return;
+                }
+                DemoUserDetailDto detailDto = new DemoUserDetailDto();
+                detailDto.setUserId(2L);
+                detailDto.setUserDetail(pic);
+                detailDto.setAddress1Line1("default address!");
+                detailDto.setAddress1Line2("default address!");
+                detailDto.setAddress1PostCode("default address!");
+                detailDto.setAddress2Line1("default address!");
+                detailDto.setAddress2Line2("default address!");
+                detailDto.setAddress2PostCode("default address!");
+                detailDto.setAddress3Line1("default address!");
+                detailDto.setAddress3Line2("default address!");
+                detailDto.setAddress3PostCode("default address!");
+                demoUserDAO.createUserDetail(detailDto);
+            }
+            tested = true;
+        }
+    }
+
 
     @Override
     public operateUserParam signUp(operateUserParam param) {

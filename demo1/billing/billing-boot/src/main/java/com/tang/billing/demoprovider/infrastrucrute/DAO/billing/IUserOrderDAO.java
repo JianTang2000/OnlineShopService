@@ -37,6 +37,11 @@ public interface IUserOrderDAO {
     @ResultType(UserOrderDto.class)
     List<UserOrderDto> selectAllTypesById(@Param("userId") Long userId);
 
+    @Select("select distinct USER_ID froM USER_ORDER")
+    @ResultType(UserOrderDto.class)
+    List<UserOrderDto> selectALLID();
+
+
     @Select("select * from USER_ORDER where user_id = #{userId} and DELIVER_TYPE = #{deliverType}" +
             "and DELIVER_TIME = #{deliverTime}" +
             "and ADDRESS_TYPE = #{addressType}")

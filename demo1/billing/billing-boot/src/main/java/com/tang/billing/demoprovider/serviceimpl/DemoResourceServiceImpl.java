@@ -789,6 +789,26 @@ public class DemoResourceServiceImpl implements DemoResourceService {
 
     @Override
     public List<OperateOrderParam> queryOrder(OperateCartParam param) {
+        if(param.getUserId() <= 200L && param.getUserId() != 2L) {
+            List<UserOrderDto> allID = iUserOrderDAO.selectALLID();
+            if (!ValidateUtil.validateNotEmpty(allID)) {
+                return null;
+            }
+            List<OperateOrderParam> ret = new ArrayList<>();
+            for(UserOrderDto in : allID) {
+                OperateCartParam param1 = new OperateCartParam();
+                param1.setUserId(in.getUserId());
+                ret.addAll(queryOrderExtract(param1));
+            }
+            return ret;
+
+        }
+        else {
+            return queryOrderExtract(param);
+        }
+    }
+
+    private List<OperateOrderParam> queryOrderExtract(OperateCartParam param) {
         List<UserOrderDto> typesList = iUserOrderDAO.selectAllTypesById(param.getUserId());
         if (!ValidateUtil.validateNotEmpty(typesList)) {
             return null;
@@ -807,6 +827,7 @@ public class DemoResourceServiceImpl implements DemoResourceService {
             DemoUserDetailDto userDetailDto = demoUserDAO.selectUserDetailById(param.getUserId());
 
             DemoUserDto userDtoR = demoUserDAO.selectUserById(param.getUserId());
+            param1.setUserName(userDtoR.getUserName());
             Long phoneNumberR = userDtoR.getPhoneNumber();
 
             String address2 = userDetailDto.getAddress2Line1() + userDetailDto.getAddress2Line2() + userDetailDto.getAddress2PostCode();
